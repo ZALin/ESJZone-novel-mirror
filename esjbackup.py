@@ -7,10 +7,6 @@ import re
 import time
 
 
-myheader = {
-    'Cookie' : 'e_mem_date=2019-07-20+03%3A33%3A54; e_mem_id=1',
-}
-
 symbol_list = {
     "\\": "-",
     "/": "-",
@@ -27,7 +23,7 @@ symbol_list = {
 }
 
 def write_page(url, dst_file):
-    r = requests.get(url, headers=myheader)
+    r = requests.get(url)
     html_element = lxml.html.document_fromstring(r.text)
     if html_element.xpath('//h2'):
         title = html_element.xpath('//h2')[0]
@@ -56,7 +52,7 @@ if __name__ == "__main__":
 
     novelid_list = []
     for i in range(3,0,-1):
-        r = requests.get('https://www.esjzone.cc/list-11/'+str(i)+'.html', headers=myheader)
+        r = requests.get('https://www.esjzone.cc/list-11/'+str(i)+'.html')
         html_element = lxml.html.document_fromstring(r.text)
         search_result = html_element.xpath('//div[@class="col-xl-9 col-lg-8 p-r-30"]')
         if search_result:
@@ -68,7 +64,7 @@ if __name__ == "__main__":
 
     for novel_id in novelid_list:
 
-        r = requests.get('https://www.esjzone.cc/detail/' + novel_id + '.html', headers=myheader)
+        r = requests.get('https://www.esjzone.cc/detail/' + novel_id + '.html')
         html_element = lxml.html.document_fromstring(r.text)
 
         novel_name = html_element.xpath('//h2[@class="p-t-10 text-normal"]')[0].text_content()

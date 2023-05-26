@@ -1,11 +1,13 @@
-
+書名: 老師們的輝煌事蹟
+URL: https://www.esjzone.cc/detail/1591959136.html
 類型: 原創
 作者: 厭師
-台版書名: 
-其他書名: 
-Web生肉: 
-文庫版: 
 更新日期: 2021-06-08 
+
+使用的備份工具:
+https://github.com/ZALin/ESJ-novel-backup
+
+
 
 
 關於一些老師的誇張行為。

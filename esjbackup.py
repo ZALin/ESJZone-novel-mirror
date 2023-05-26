@@ -7,6 +7,10 @@ import re
 import time
 
 
+myheader = {
+    'Cookie' : 'ews_key=; ews_token=;',
+}
+
 symbol_list = {
     "\\": "-",
     "/": "-",
@@ -23,7 +27,7 @@ symbol_list = {
 }
 
 def write_page(url, dst_file):
-    r = requests.get(url)
+    r = requests.get(url, headers=myheader)
     html_element = lxml.html.document_fromstring(r.text)
     if html_element.xpath('//h2'):
         title = html_element.xpath('//h2')[0]
@@ -33,6 +37,7 @@ def write_page(url, dst_file):
             f.write('[' + title.text_content().encode('utf-8') + '] ' + author.text_content().strip().encode('utf-8') + '\n')
             f.write(content.text_content().encode('utf-8')+'\n\n')
 
+    
 def contain(string, array):
     if isinstance(array, dict):
         return any(symbol in string for symbol in array.keys())
@@ -51,8 +56,8 @@ def escape_symbol(string):
 if __name__ == "__main__":
 
     novelid_list = []
-    for i in range(3,0,-1):
-        r = requests.get('https://www.esjzone.cc/list-11/'+str(i)+'.html')
+    for i in range(2,0,-1):
+        r = requests.get('https://www.esjzone.cc/list-11/'+str(i)+'.html', headers=myheader)
         html_element = lxml.html.document_fromstring(r.text)
         search_result = html_element.xpath('//div[@class="col-xl-9 col-lg-8 p-r-30"]')
         if search_result:
@@ -64,12 +69,18 @@ if __name__ == "__main__":
 
     for novel_id in novelid_list:
 
-        r = requests.get('https://www.esjzone.cc/detail/' + novel_id + '.html')
+        novel_url = 'https://www.esjzone.cc/detail/' + novel_id + '.html'
+        r = requests.get(novel_url, headers=myheader)
         html_element = lxml.html.document_fromstring(r.text)
 
         novel_name = html_element.xpath('//h2[@class="p-t-10 text-normal"]')[0].text_content()
+        novel_name = escape_symbol(novel_name.encode('utf-8'))
         print novel_name
-        dst_filename = escape_symbol(novel_name.encode('utf-8')) + ".txt"
+        dst_filename = novel_name + '.txt'
+        with open(dst_filename, 'w') as f:
+            f.write(u"書名: ".encode('utf-8') + novel_name + "\n")
+        with open(dst_filename, 'a') as f:
+            f.write(u"URL: " + novel_url)
 
         novel_details_element = html_element.xpath('//ul[@class="list-unstyled mb-2 book-detail"]')[0]
         if novel_details_element.xpath('//ul[@class="list-unstyled mb-2 book-detail"]/li/div'):
@@ -77,8 +88,17 @@ if __name__ == "__main__":
             for bad_div in bad_divs:
                 bad_div.getparent().remove(bad_div)
         novel_details = novel_details_element.text_content()
-        with open(dst_filename, 'w') as f:
+        with open(dst_filename, 'a') as f:
             f.write(novel_details.encode('utf-8'))
+        with open(dst_filename, 'a') as f:
+            f.write(u"使用的備份工具:\nhttps://github.com/ZALin/ESJ-novel-backup\n\n".encode('utf-8'))
+
+        novel_outlink_element = html_element.xpath('//div[@class="row out-link"]')[0]
+        if len(novel_outlink_element) != 0:
+            outlink_list = novel_outlink_element.getchildren()
+            for element in outlink_list:
+                with open(dst_filename, 'a') as f:
+                    f.write(element.getchildren()[0].text_content().encode('utf-8') + u":\n".encode('utf-8') + element.getchildren()[0].attrib['href'].encode('utf-8') + "\n")
 
 
         if re.search('id="details"', r.text):
@@ -93,8 +113,17 @@ if __name__ == "__main__":
 
         if re.search('id="chapterList"', r.text):
             chapter_list = html_element.get_element_by_id("chapterList").getchildren()
+            chapter_list_without_details_tag = []
             
             for element in chapter_list:
+
+                if element.tag == 'details':
+                    for i in element.getchildren():
+                        chapter_list_without_details_tag.append(i)
+                else:
+                    chapter_list_without_details_tag.append(element)
+
+            for element in chapter_list_without_details_tag:
                 
                 with open(dst_filename, 'a') as f:
                     print element.text_content()
@@ -107,7 +136,4 @@ if __name__ == "__main__":
                     else:
                         with open(dst_filename, 'a') as f:
                             f.write( element.attrib['href'] + u' {非站內連結，略過}\n'.encode('utf-8'))
-
-
-
 

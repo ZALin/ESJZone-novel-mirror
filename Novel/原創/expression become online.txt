@@ -1,11 +1,13 @@
-
+書名: expression become online
+URL: https://www.esjzone.cc/detail/1590802426.html
 類型: 原創
 作者: CHAN
-台版書名: 
-其他書名: 
-Web生肉: 
-文庫版: 
 更新日期: 2021-06-12 
+
+使用的備份工具:
+https://github.com/ZALin/ESJ-novel-backup
+
+
 
 
 這只是一個普通的網游VRMMO類作品

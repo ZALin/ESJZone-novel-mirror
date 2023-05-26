@@ -1,11 +1,13 @@
-
+書名: 身在這世界的我們
+URL: https://www.esjzone.cc/detail/1605364953.html
 類型: 原創
 作者: 夜氏
-台版書名: 
-其他書名: 
-Web生肉: 
-文庫版: 
 更新日期: 2021-06-21 
+
+使用的備份工具:
+https://github.com/ZALin/ESJ-novel-backup
+
+
 
 
 幾對異世界情侶的生活です。(拿來練習的，希望能得到改進的建議)

@@ -1,11 +1,14 @@
-
+書名: 世界之夢，異界再臨
+URL: https://www.esjzone.cc/detail/1599242091.html
 類型: 原創
 作者: Alive Me
-台版書名: 夢醒之時
 其他書名: 怨恨毫無能力的自己，轉生異世界從頭來過
-Web生肉: 
-文庫版: 
 更新日期: 2021-07-14 
+
+使用的備份工具:
+https://github.com/ZALin/ESJ-novel-backup
+
+
 
 01.悲傷的夢
 [01.悲傷的夢] by Alive Me
